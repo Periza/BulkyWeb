@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulkyWeb", "BulkyWeb\BulkyWeb.csproj", "{DBB4BEBF-6A1F-45D8-BCF5-862E2539202B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bulky_DataAccess", "Bulky_DataAccess\Bulky_DataAccess.csproj", "{4CAA5005-B3E2-4645-B7A0-E61540368C4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bulky.DataAccess", "Bulky_DataAccess\Bulky.DataAccess.csproj", "{4CAA5005-B3E2-4645-B7A0-E61540368C4D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bulky.Models", "Bulky.Models\Bulky.Models.csproj", "{11362E3A-12A8-49E1-810E-CE31C4B872FD}"
 EndProject
