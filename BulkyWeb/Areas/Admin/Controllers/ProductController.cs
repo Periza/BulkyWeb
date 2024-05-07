@@ -22,7 +22,7 @@ public class ProductController : Controller
     }
     public IActionResult Index()
     {
-        List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
+        List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
         
         return View(objProductList);
     }
@@ -52,7 +52,6 @@ public class ProductController : Controller
             productVM.Product = _unitOfWork.Product.Get(u => u.Id == id);
             return View(productVM);
         }
-        return View(productVM);
     }
 
     [HttpPost]
