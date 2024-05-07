@@ -5,6 +5,7 @@ using Bulky.Models;
 using Bulky.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Bulky.Models.ViewModels;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace BulkyWeb.Areas.Admin.Controllers;
 
@@ -12,9 +13,12 @@ namespace BulkyWeb.Areas.Admin.Controllers;
 public class ProductController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
-    public ProductController(IUnitOfWork unitOfWork)
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
     {
         _unitOfWork = unitOfWork;
+        _webHostEnvironment = webHostEnvironment;
+
     }
     public IActionResult Index()
     {
@@ -57,6 +61,21 @@ public class ProductController : Controller
 
         if (ModelState.IsValid)
         {
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+            if(file is not null)
+            {
+                string filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string productPath = Path.Combine(wwwRootPath, @"images\product");
+
+                using FileStream fileSteram = new(Path.Combine(productPath, filename), FileMode.Create);
+
+                file.CopyTo(fileSteram);
+
+                productVm.Product.ImageUrl = @"\images\product\" + filename;
+
+            }
+
             _unitOfWork.Product.Add(productVm.Product);
             _unitOfWork.Save();
             TempData["success"] = "Product created successfully";
