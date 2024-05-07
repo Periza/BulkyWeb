@@ -23,7 +23,7 @@ public class ProductController : Controller
         return View(objProductList);
     }
 
-    public IActionResult Create()
+    public IActionResult Upsert(int? id) //UpdateInsert
     {
         IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category
             .GetAll().Select(u => new SelectListItem
@@ -37,11 +37,22 @@ public class ProductController : Controller
             CategoryList = CategoryList,
             Product = new Product()
         };
+        if(id is null or 0)
+        {
+            // Create
+            return View(productVM);
+        }
+        else
+        {
+            // Update
+            productVM.Product = _unitOfWork.Product.Get(u => u.Id == id);
+            return View(productVM);
+        }
         return View(productVM);
     }
 
     [HttpPost]
-    public IActionResult Create(ProductVM productVm)
+    public IActionResult Upsert(ProductVM productVm, IFormFile? file)
     {
 
         if (ModelState.IsValid)
@@ -61,29 +72,6 @@ public class ProductController : Controller
             return View();
         }
         
-    }
-
-    public IActionResult Edit(int? id)
-    {
-        if (id is null || id == 0)
-            return NotFound();
-        Product productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
-        if (productFromDb is null)
-            return NotFound();
-        return View(productFromDb);
-    }
-
-    [HttpPost]
-    public IActionResult Edit(Product obj)
-    {
-        if (ModelState.IsValid)
-        {
-            _unitOfWork.Product.Update(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "Product updated successfully";
-            return RedirectToAction("Index");
-        }
-        return View();
     }
 
     public IActionResult Delete(int? id)
